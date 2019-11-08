@@ -1,43 +1,46 @@
 package sorting;
 
-import java.math.BigInteger;
+import java.util.Comparator;
 import java.util.Scanner;
 
+class StringNumberComparator implements Comparator<String> {
+    public int compare(String x, String y) {
+        if (x.length() == y.length())
+            return x.compareTo(y);
+        return x.length() - y.length();
+    }
+}
+
 /*
- *Not the best solution of Big Sorting problem
+ * Not really best solution for Big Sorting problem
+ * Missing 1 out of 9 test cases
+ * Need faster algorithm
  */
-public class BigSortingMergeSort {
+public class BigSorting {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int n = scanner.nextInt();
-        String[] bigUnsorted = new String[n];
+        String[] arrToSort = new String[n];
         for (int i = 0; i < n; i++)
-            bigUnsorted[i] = scanner.next();
-        String[] result = bigSorting(bigUnsorted);
+            arrToSort[i] = scanner.next();
+        bigSorting(arrToSort);
         for (int i = 0; i < n; i++)
-            System.out.println(result[i]);
+            System.out.println(arrToSort[i]);
     }
 
-    public static String[] bigSorting(String[] unsorted) {
-        BigInteger[] bigIntegers = new BigInteger[unsorted.length];
-        for (int i = 0; i < unsorted.length; i++)
-            bigIntegers[i] = new BigInteger(unsorted[i]);
-        mergeSort(bigIntegers, 0, bigIntegers.length-1);
-        String[] result = new String[bigIntegers.length];
-        for (int i = 0; i < bigIntegers.length; i++)
-            result[i] = bigIntegers[i].toString();
-        return result;
+    public static void bigSorting(String[] unsorted) {
+        mergeSort(unsorted, 0, unsorted.length-1);
     }
 
-    public static void mergeSort(BigInteger[] arr, int left, int right) {
+    public static void mergeSort(String[] arr, int left, int right) {
         if (arr.length == 1)
             return;
         int mid = (right+left)/2;
         int leftSize = mid-left+1;
         int rightSize = right-mid;
-        BigInteger[] leftSide = new BigInteger[leftSize];
-        BigInteger[] rightSide = new BigInteger[rightSize];
+        String[] leftSide = new String[leftSize];
+        String[] rightSide = new String[rightSize];
         for (int i = 0; i < leftSize; i++)
             leftSide[i] = arr[i];
         for (int i = 0; i < rightSize; i++)
@@ -47,13 +50,14 @@ public class BigSortingMergeSort {
         mergeArray(arr, leftSide, rightSide, leftSize, rightSize);
     }
 
-    public static void mergeArray(BigInteger[] arr, BigInteger[] leftside, BigInteger[] rightSide,
+    public static void mergeArray(String[] arr, String[] leftside, String[] rightSide,
                                   int leftSize, int rightSize) {
         int iArr = 0;
         int iLeft = 0;
         int iRight = 0;
+        StringNumberComparator comparator = new StringNumberComparator();
         while (iLeft<leftSize && iRight<rightSize) {
-            if (leftside[iLeft].compareTo(rightSide[iRight]) < 0) {
+            if (comparator.compare(leftside[iLeft], rightSide[iRight]) < 0) {
                 arr[iArr] = leftside[iLeft];
                 iLeft++;
             } else {
