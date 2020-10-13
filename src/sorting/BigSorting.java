@@ -11,11 +11,6 @@ class StringNumberComparator implements Comparator<String> {
     }
 }
 
-/*
- * Not really best solution for Big Sorting problem
- * Missing 1 out of 9 test cases
- * Need faster algorithm
- */
 public class BigSorting {
 
     public static void main(String[] args) {
